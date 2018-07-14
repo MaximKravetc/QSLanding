@@ -14,9 +14,8 @@ class IndexController extends ControllerAbstract {
                 try {
                     $mailObj = new Zend_Mail('utf-8');
                     $mailObj->addTo('chapligin.vitaly@yandex.ru');
-                    $mailObj->setFrom('chapligin.vitaly@yandex.ru');
-                    $mailObj->setSubject('Новый пользователь:');
-                    $mailObj->setBodyHtml( '<p>' . $name . '</p><p>' . $email . '</p>');
+                    $mailObj->setSubject('Quantum System notifier');
+                    $mailObj->setBodyHtml( 'Новый пользователь:<p>' . $name . '</p><p>' . $email . '</p>');
                     $mailObj->send();
                 } catch (Exception $e) {
                     echo $e->getMessage() . PHP_EOL;

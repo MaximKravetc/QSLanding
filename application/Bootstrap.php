@@ -21,6 +21,11 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
 	protected function _initDao() {
 		$mongo = Yaf_Application::app()->getConfig()->get('datastore.mongodb')->toArray();
 		\Shelby\Dao\Mongodb\AbstractClass::init($mongo);
+
+        $config = Yaf_Application::app()->getConfig()->offsetGet('resources.mail')->toArray();
+        $transport = new Zend_Mail_Transport_Smtp($config['transport']['host'], $config['transport']);
+        Zend_Mail::setDefaultTransport($transport);
+        Zend_Mail::setDefaultFrom($config['defaultFrom']['email'], $config['defaultFrom']['name']);
 	}
 
 	protected function _initSmarty(Yaf_Dispatcher $dispatcher) {
