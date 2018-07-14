@@ -13,7 +13,7 @@ class IndexController extends ControllerAbstract {
             $ip    = $this->getRequest()->getServer('REMOTE_ADDR');
 
             if (!empty($name) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->model->addUser($name, $email, $phone, $ip, $ua);
+//                $this->model->addUser($name, $email, $phone, $ip, $ua);
 
                 try {
                     $mailObj = new Zend_Mail('utf-8');
