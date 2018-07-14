@@ -1,0 +1,32 @@
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  transition: .25s ease-out;
+  outline: none;
+}
+
+input {
+  transition: .25s ease-out;
+}
+
+.img-group {
+  img {
+    width: 100%;
+  }
+  a {
+    text-align: center;
+    margin: 5px auto 10px;
+    display: block;
+    transition: .25s ease-out;
+    &:hover {
+      opacity: .5;
+    }
+  }
+
+}

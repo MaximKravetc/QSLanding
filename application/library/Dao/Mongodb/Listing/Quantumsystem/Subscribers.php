@@ -17,6 +17,7 @@ class Subscribers extends AbstractClass {
 		$fields->addText('ua');
 		$fields->addText('name')->setRequired();
 		$fields->addText('email')->setRequired();
+		$fields->addText('phone')->setRequired();
 
 		$fields->addDate('date')->setDefault(new \MongoDB\BSON\UTCDateTime());
 

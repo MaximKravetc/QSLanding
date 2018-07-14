@@ -1,0 +1,438 @@
+{% set site_name = "Studio site admin" %}
+
+<!doctype html>
+<html lang="en" class="perfect-scrollbar-off">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <title>{{ page_title }} | {{ site_name }}</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
+    <link href="/css/style.min.css" rel="stylesheet"/>
+
+
+</head>
+<body>
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
+        {% block sidebar %}
+            {% include "partials/sidebar.njk" %}
+        {% endblock %}
+    </div>
+
+    <div class="main-panel">
+        {% include "partials/submenu.njk" %}
+        {% block main %}{% endblock %}
+        {% include "partials/footer.njk" %}
+    </div>
+
+</div>
+
+
+</body>
+
+<script src="/js/main.js"></script>
+
+{% if base_path == 'index' %}
+    <script>
+        $(document).ready(function(){
+            demo.initOverviewDashboard();
+            demo.initCirclePercentage();
+
+        });
+    </script>
+{% endif %}
+
+{% if base_path == 'calendar' %}
+    <script>
+        $(document).ready(function(){
+            demo.initFullCalendar();
+        });
+    </script>
+{% endif %}
+
+{% if base_path == 'charts' %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            demo.initChartsPage();
+        });
+    </script>
+{% endif %}
+
+
+
+{% if base_path == 'extended' %}
+    <script>
+        $(document).ready(function () {
+            $().ready(function(){
+                // Init Sliders
+                demo.initFormExtendedSliders();
+                // Init DatetimePicker
+                demo.initFormExtendedDatetimepickers();
+            });
+        });
+    </script>
+{% endif %}
+
+{% if base_path == 'validation' %}
+    <script type="text/javascript">
+        $().ready(function(){
+            $('#registerFormValidation').validate();
+            $('#loginFormValidation').validate();
+            $('#allInputsFormValidation').validate();
+        });
+    </script>
+{% endif %}
+
+{% if base_path == 'wizard' %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            demo.initWizard();
+        });
+    </script>
+{% endif %}
+
+{% if base_path == 'bootstrap' %}
+    <script type="text/javascript">
+
+        var $table = $('#bootstrap-table');
+
+        function operateFormatter(value, row, index) {
+            return [
+                '<div class="table-icons">',
+                '<a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon table-action view" href="javascript:void(0)">',
+                '<i class="ti-image"></i>',
+                '</a>',
+                '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
+                '<i class="ti-pencil-alt"></i>',
+                '</a>',
+                '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">',
+                '<i class="ti-close"></i>',
+                '</a>',
+                '</div>',
+            ].join('');
+        }
+
+        $().ready(function(){
+            window.operateEvents = {
+                'click .view': function (e, value, row, index) {
+                    info = JSON.stringify(row);
+
+                    swal('You click view icon, row: ', info);
+                    console.log(info);
+                },
+                'click .edit': function (e, value, row, index) {
+                    info = JSON.stringify(row);
+
+                    swal('You click edit icon, row: ', info);
+                    console.log(info);
+                },
+                'click .remove': function (e, value, row, index) {
+                    console.log(row);
+                    $table.bootstrapTable('remove', {
+                        field: 'id',
+                        values: [row.id]
+                    });
+                }
+            };
+
+            $table.bootstrapTable({
+                toolbar: ".toolbar",
+                clickToSelect: true,
+                showRefresh: true,
+                search: true,
+                showToggle: true,
+                showColumns: true,
+                pagination: true,
+                searchAlign: 'left',
+                pageSize: 8,
+                clickToSelect: false,
+                pageList: [8,10,25,50,100],
+
+                formatShowingRows: function(pageFrom, pageTo, totalRows){
+                    //do nothing here, we don't want to show the text "showing x of y from..."
+                },
+                formatRecordsPerPage: function(pageNumber){
+                    return pageNumber + " rows visible";
+                },
+                icons: {
+                    refresh: 'fa fa-refresh',
+                    toggle: 'fa fa-th-list',
+                    columns: 'fa fa-columns',
+                    detailOpen: 'fa fa-plus-circle',
+                    detailClose: 'ti-close'
+                }
+            });
+
+            //activate the tooltips after the data table is initialized
+            $('[rel="tooltip"]').tooltip();
+
+            $(window).resize(function () {
+                $table.bootstrapTable('resetView');
+            });
+        });
+
+    </script>
+{% endif %}
+
+{% if base_path == 'datatables' %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#datatables').DataTable({
+                "pagingType": "full_numbers",
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search records",
+                }
+            });
+
+
+            var table = $('#datatables').DataTable();
+            // Edit record
+            table.on( 'click', '.edit', function () {
+                $tr = $(this).closest('tr');
+
+                var data = table.row($tr).data();
+                alert( 'You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.' );
+            } );
+
+            // Delete a record
+            table.on( 'click', '.remove', function (e) {
+                $tr = $(this).closest('tr');
+                table.row($tr).remove().draw();
+                e.preventDefault();
+            } );
+
+            //Like record
+            table.on( 'click', '.like', function () {
+                alert('You clicked on Like button');
+            });
+
+        });
+    </script>
+{% endif %}
+
+{% if base_path == 'scene-add' %}
+    <script type="text/javascript">
+        $().ready(function() {
+            demo.initFormExtendedDatetimepickers();
+
+            $("#customTime").change(function() {
+                if(this.checked) {
+                   $('#reIncoding').prop('checked', true);
+                   $('#dateCollapse').addClass('in');
+                   $('#dateCollapse input').prop('disabled', false);
+                } else {
+                    $('#reIncoding').prop('checked', false);
+                    $('#dateCollapse').removeClass('in');
+                    $('#dateCollapse input').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+{% endif %}
+
+
+{% if base_path == 'table-ajax' %}
+    <script type="text/javascript">
+        $('#example').DataTable( {
+            ajax:           "/data//data.txt",
+            deferRender:    true,
+            scrollY:        200,
+            scrollCollapse: true,
+            scroller:       true,
+            stateSave:      true
+        } );
+    </script>
+{% endif %}
+
+{% if base_path == 'datatables_popup' %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#datatables').DataTable({
+                "pagingType": "full_numbers",
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search records",
+                }
+            });
+
+
+            var table = $('#datatables').DataTable();
+            // Edit record
+            table.on( 'click', '.edit', function () {
+                $tr = $(this).closest('tr');
+
+                var data = table.row($tr).data();
+                alert( 'You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.' );
+            } );
+
+            // Delete a record
+            table.on( 'click', '.remove', function (e) {
+                $tr = $(this).closest('tr');
+
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-success btn-fill',
+                    cancelButtonClass: 'btn btn-danger btn-fill',
+                    confirmButtonText: 'Yes, delete it!',
+                    buttonsStyling: false
+                }).then(function() {
+                    swal({
+                        title: 'Deleted!',
+                        text: 'Your row has been deleted.',
+                        type: 'success',
+                        timer: 1500,
+                        confirmButtonClass: "btn btn-success btn-fill is-success",
+                        buttonsStyling: false
+                    })
+                    table.row($tr).remove().draw();
+                    e.preventDefault();
+                });
+
+            } );
+
+
+            //Like record
+            table.on( 'click', '.like', function () {
+                alert('You clicked on Like button');
+            });
+
+
+
+        });
+
+
+
+    </script>
+{% endif %}
+
+
+
+{% if base_path == 'model-add' %}
+    <script type="text/javascript">
+        $().ready(function() {
+            demo.initFormExtendedDatetimepickers();
+
+        });
+    </script>
+{% endif %}
+
+{% if base_path == 'upload' %}
+    <script>
+        // Get the template HTML and remove it from the doument
+        var previewNode = document.querySelector("#template");
+        previewNode.id = "";
+        var previewTemplate = previewNode.parentNode.innerHTML;
+        previewNode.parentNode.removeChild(previewNode);
+
+        var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+            url: "http://www.torrentplease.com/dropzone.php", // Set the url
+            thumbnailWidth: 80,
+            thumbnailHeight: 80,
+            parallelUploads: 20,
+            previewTemplate: previewTemplate,
+            autoQueue: false, // Make sure the files aren't queued until manually added
+            previewsContainer: "#previews", // Define the container to display the previews
+            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+        });
+
+        myDropzone.on("addedfile", function(file) {
+            // Hookup the start button
+            file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
+        });
+
+        // Update the total progress bar
+        myDropzone.on("totaluploadprogress", function(progress) {
+            document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+        });
+
+        myDropzone.on("sending", function(file) {
+            // Show the total progress bar when upload starts
+            document.querySelector("#total-progress").style.opacity = "1";
+            // And disable the start button
+            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+        });
+
+        // Hide the total progress bar when nothing's uploading anymore
+        myDropzone.on("queuecomplete", function(progress) {
+            document.querySelector("#total-progress").style.opacity = "0";
+        });
+
+        // Setup the buttons for all transfers
+        // The "add files" button doesn't need to be setup because the config
+        // `clickable` has already been specified.
+        document.querySelector("#actions .start").onclick = function() {
+            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+        };
+        document.querySelector("#actions .cancel").onclick = function() {
+            myDropzone.removeAllFiles(true);
+        };
+
+
+
+
+
+        // Now fake the file upload, since GitHub does not handle file uploads
+        // and returns a 404
+
+        var minSteps = 6,
+            maxSteps = 60,
+            timeBetweenSteps = 100,
+            bytesPerStep = 100000;
+
+        myDropzone.uploadFiles = function(files) {
+            var self = this;
+
+            for (var i = 0; i < files.length; i++) {
+
+                var file = files[i];
+                totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+
+                for (var step = 0; step < totalSteps; step++) {
+                    var duration = timeBetweenSteps * (step + 1);
+                    setTimeout(function(file, totalSteps, step) {
+                        return function() {
+                            file.upload = {
+                                progress: 100 * (step + 1) / totalSteps,
+                                total: file.size,
+                                bytesSent: (step + 1) * file.size / totalSteps
+                            };
+
+                            self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+                            if (file.upload.progress == 100) {
+                                file.status = Dropzone.SUCCESS;
+                                self.emit("success", file, 'success', null);
+                                self.emit("complete", file);
+                                self.processQueue();
+                            }
+                        };
+                    }(file, totalSteps, step), duration);
+                }
+            }
+        }
+
+    </script>
+{% endif %}
+
+
+
+</html>
+
+
+
+
+

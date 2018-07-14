@@ -107,6 +107,12 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                        <div class="input-group">
+                            <div class="input-group-addon" style="background-image: url('/s/Content/images/ico-phone.png'); background-size: 80%;"></div>
+                            <input type="text" name="phone" class="form-control" placeholder="Номер телефона" required/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
                         <button type="submit" class="button green">
                             ДА! Я ХОЧУ ПОЛУЧИТЬ VIP ДОСТУП К QUANTUM SYSTEM ПРЯМО СЕЙЧАС
                         </button>
